@@ -1,6 +1,7 @@
 from collections import defaultdict
 import logging
 import numpy as np
+import math
 from hawk import Hawk
 
 COHESION_RADIUS = 10
@@ -140,19 +141,20 @@ class BoidSimulation:
                 repel = offset / (dist + 1e-5)
                 new_vel += repel * HAWK_WEIGHT
 
-        # Repelled from walls
-        # (some shorthands)
-        wrp = WALL_REPEL_RADIUS
+        # Keep the boids in the central circle
+        cx, cy = self.width / 2, self.height / 2
         x, y = self.positions[i]
-        w, h = self.width, self.height
-        if x < wrp:
-            new_vel[0] += (1 - x / wrp) * WALL_REPEL_WEIGHT
-        if x > w - wrp:
-            new_vel[0] -= (1 - (w - x) / wrp) * WALL_REPEL_WEIGHT
+        dx, dy = x - cx, y - cy
+        dist = math.hypot(dx, dy)
 
-        if y < wrp:
-            new_vel[1] += (1 - y / wrp) * WALL_REPEL_WEIGHT
-        if y > h - wrp:
-            new_vel[1] -= (1 - (h - y) / wrp) * WALL_REPEL_WEIGHT
+        circle_radius = min(self.width, self.height) / 2
+        circle_buffer = WALL_REPEL_RADIUS  # same value, reused
+        edge_radius = circle_radius - circle_buffer
+
+        if dist > edge_radius:
+            excess = dist - edge_radius
+            repel_strength = (excess / circle_buffer) * WALL_REPEL_WEIGHT
+            direction = np.array([-dx, -dy]) / (dist + 1e-5)
+            new_vel += direction * repel_strength
 
         return new_vel
