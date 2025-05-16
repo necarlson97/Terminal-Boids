@@ -5,11 +5,11 @@ from hawk import Hawk
 
 COHESION_RADIUS = 10
 ALIGNMENT_RADIUS = COHESION_RADIUS
-SEPARATION_RADIUS = int(COHESION_RADIUS/2)
+SEPARATION_RADIUS = int(COHESION_RADIUS / 2)
 
 COHESION_WEIGHT = 0.02
-ALIGNMENT_WEIGHT = 0.02
-SEPARATION_WEIGHT = 0.05
+ALIGNMENT_WEIGHT = 0.03
+SEPARATION_WEIGHT = 0.02
 
 WALL_REPEL_RADIUS = 10
 WALL_REPEL_WEIGHT = 0.2
@@ -38,6 +38,8 @@ class BoidSimulation:
         # TODO place them more intelligently based on count
         self.hawks = [
             Hawk(width/2, height/2, GRID_SIZE),
+            # Hawk(10, 10, GRID_SIZE),
+            # Hawk(width-10, height-10, GRID_SIZE),
         ]
 
     def update(self):
