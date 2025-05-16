@@ -9,4 +9,4 @@ export LANG=en_US.UTF-8
 
 FONT="Noto Mono"
 
-fbterm -s 20 -- bash -c "python3 /home/pi/Terminal-Boids/main.py"
+fbterm -s 30 -- bash -c "python3 /home/pi/Terminal-Boids/main.py"
