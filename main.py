@@ -15,7 +15,7 @@ logging.basicConfig(
 
 
 FPS = 30
-NUM_BOIDS = 200
+NUM_BOIDS = 50
 DEBUG = False
 
 def main(stdscr):
