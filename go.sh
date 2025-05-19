@@ -1,12 +1,16 @@
 #!/bin/bash
 
-# Set a fallback font config if fbterm can't pick up the system one
-export LC_ALL=en_US.UTF-8
+# Wait until the framebuffer and tty1 exist
+while [ ! -e /dev/fb0 ] || [ ! -e /dev/tty1 ]; do
+  echo "Waiting for fb0 and tty1..."
+  sleep 1
+done
+
+# Switch to tty1 (only works from root context or with systemd)
+chvt 1
+
+# Run the boids script in fbterm
 export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 
-# Launch fbterm with a nice monospace font
-# You can use 'NotoMono', 'DejaVu Sans Mono', etc. (run `fc-list :mono` to check installed monospace fonts)
-
-FONT="Noto Mono"
-
-fbterm -s 24 -- bash -c "python3 /home/pi/Terminal-Boids/main.py"
+exec fbterm -s 24 -- bash -c "cd /home/pi/Terminal-Boids && python3 main.py"
